@@ -70,10 +70,6 @@ int Light::getBrightness(void){
 Light::Light(int adc_channel) {
     //constructor
     channel = adc_channel;
-	
-
-	 
-    
 }
 
 Light::~Light(void) {

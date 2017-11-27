@@ -144,7 +144,7 @@ void Pulse::BPMLoop(void) {
 			//cout << "reached3" << endl;
         }
 
-        this_thread::sleep_for(milliseconds(5));
+        delay(5);
     }
 }
 

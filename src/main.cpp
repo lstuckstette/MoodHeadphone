@@ -11,7 +11,7 @@
 
 #define PULSESENSOR_CHANNEL 1
 #define LIGHTSENSOR_CHANNEL 0
-#define DHT_GPIO 1
+#define DHT_GPIO 29 //BCM_GPIO21 -->see gpio readall
 
 using namespace std;
 using namespace std::chrono;
@@ -33,14 +33,19 @@ int main(void) {
 	
     Pulse p(PULSESENSOR_CHANNEL);
     p.startReading();
-	
 	Light l(LIGHTSENSOR_CHANNEL);
 	l.startReading();
-    while (true) {
-        
+	DHT22 t(DHT_GPIO);
+	t.startReading();
+    while (true) {        
         //cout << "reading " << p.getBPM() << " BPM!" << endl;
-		cout << "reading " << l.getBrightness() << endl;
-        this_thread::sleep_for(milliseconds(500));
+		cout << "DHT22: " << t.getTemperature() << "C" << " and Humidity: " << t.getHumidity() << "%."<< endl;
+		cout << "Lightsensor: " << l.getBrightness() << " (raw)" << endl;
+		cout << "Pulsesensor: " << p.getBPM() << " (bpm)" << endl;
+		cout << "------------------------------------------" << endl;
+        this_thread::sleep_for(milliseconds(1000));
     }
-    p.stopReading();
+    //p.stopReading();
 }
+
+
