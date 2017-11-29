@@ -35,7 +35,7 @@ void initialize(void){
 }
 
 void buttonTest(int pin){
-	cout << "Button " << pin << "pressed!" << endl;
+	cout << "Button " << pin << " pressed!" << endl;
 }
 
 int main(void) {
@@ -56,12 +56,13 @@ int main(void) {
 	DHT22 t(DHT_GPIO);
 	t.startReading();
     while (true) {        
-        //cout << "reading " << p.getBPM() << " BPM!" << endl;
-		cout << "DHT22: " << t.getTemperature() << "C" << " and Humidity: " << t.getHumidity() << "%."<< endl;
-		cout << "Lightsensor: " << l.getBrightness() << " (raw)" << endl;
-		cout << "Pulsesensor: " << p.getBPM() << " (bpm)" << endl;
+
+		//cout << "DHT22: " << t.getTemperature() << "C" << " and Humidity: " << t.getHumidity() << "%."<< endl;
+		//cout << "Lightsensor: " << l.getBrightness() << " (raw)" << endl;
+		//cout << "Pulsesensor: " << p.getBPM() << " (bpm)" << endl;
+		
 		cout << "------------------------------------------" << endl;
-        this_thread::sleep_for(milliseconds(1000));
+        this_thread::sleep_for(milliseconds(2000));
     }
     //p.stopReading();
 }
