@@ -12,6 +12,8 @@
 //includes for SPI/ADC
 #include <wiringPi.h> 
 
+
+
 #define BUTTON_COUNT 5 //Amount of maximum Buttons in system
 #define DEBOUNCE_DELAY 200 //millisec
 
@@ -20,7 +22,7 @@ using namespace std;
 using namespace std::chrono;
 
 //typedef vor function pointers:
-typedef void (*functionPointer)(int); 
+typedef void (*functionPointer)(void); 
 
 struct FunctionMap{
 
@@ -45,8 +47,9 @@ struct FunctionMap{
 
         //compare the types is equal or not
         //assert(mapVal.second == type_index(typeid(typeCastedFun)));
-		cout << "weird s1: " << s1 << endl;
-		return typeCastedFun(s1);
+		//cout << "weird s1: " << s1 << endl;
+		return typeCastedFun();
+		//return typeCastedFun(s1);
         //return typeCastedFun(forward<Args>(args)...);
     }
 	

@@ -5,6 +5,7 @@
 #include <wiringPi.h> 
 #include <mcp3004.h>
 //custom
+#include "MediaPlayer.cpp"
 #include "Pulsesensor.cpp"
 #include "Lightsensor.cpp"
 #include "DHT22.cpp"
@@ -42,15 +43,21 @@ int main(void) {
 	
 	initialize();
 	
-	//Button b;
-	//b.registerCallback(BUTTON_1_GPIO, &buttonTest);
-	//b.registerCallback(BUTTON_2_GPIO, &buttonTest);
-	//b.registerCallback(BUTTON_3_GPIO, &buttonTest);
-	//b.registerCallback(BUTTON_4_GPIO, &buttonTest);
-	//b.registerCallback(BUTTON_5_GPIO, &buttonTest);
 	
-    Pulse p(PULSESENSOR_CHANNEL);
-    p.startReading();
+	//MediaPlayer::playSong("guerilla project");
+	MediaPlayer::playPlaylist("Metal");
+	
+	Button b;
+	b.registerCallback(BUTTON_1_GPIO, &MediaPlayer::increaseLoudness);
+	b.registerCallback(BUTTON_2_GPIO, &MediaPlayer::nextSong);
+	b.registerCallback(BUTTON_3_GPIO, &MediaPlayer::tooglePlay);
+	b.registerCallback(BUTTON_4_GPIO, &MediaPlayer::previousSong);
+	b.registerCallback(BUTTON_5_GPIO, &MediaPlayer::decreaseLoudness);
+	
+	
+	
+    //Pulse p(PULSESENSOR_CHANNEL);
+    //p.startReading();
 	//Light l(LIGHTSENSOR_CHANNEL);
 	//l.startReading();
 	
@@ -60,7 +67,7 @@ int main(void) {
 
 		//cout << "DHT22: " << t.getTemperature() << "C" << " and Humidity: " << t.getHumidity() << "%."<< endl;
 		//cout << "Lightsensor: " << l.getBrightness() << " (raw)" << endl;
-		cout << "Pulsesensor: " << p.getBPM() << " (bpm) " << "is reading?" << p.isReadingBPM() << endl;
+		//cout << "Pulsesensor: " << p.getBPM() << " (bpm) " << "is reading?" << p.isReadingBPM() << endl;
 		
 		//cout << "------------------------------------------" << endl;
         this_thread::sleep_for(milliseconds(500));
