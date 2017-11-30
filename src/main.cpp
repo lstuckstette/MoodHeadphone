@@ -42,27 +42,28 @@ int main(void) {
 	
 	initialize();
 	
-	Button b;
-	b.registerCallback(BUTTON_1_GPIO, &buttonTest);
-	b.registerCallback(BUTTON_2_GPIO, &buttonTest);
-	b.registerCallback(BUTTON_3_GPIO, &buttonTest);
-	b.registerCallback(BUTTON_4_GPIO, &buttonTest);
-	b.registerCallback(BUTTON_5_GPIO, &buttonTest);
+	//Button b;
+	//b.registerCallback(BUTTON_1_GPIO, &buttonTest);
+	//b.registerCallback(BUTTON_2_GPIO, &buttonTest);
+	//b.registerCallback(BUTTON_3_GPIO, &buttonTest);
+	//b.registerCallback(BUTTON_4_GPIO, &buttonTest);
+	//b.registerCallback(BUTTON_5_GPIO, &buttonTest);
 	
     Pulse p(PULSESENSOR_CHANNEL);
     p.startReading();
-	Light l(LIGHTSENSOR_CHANNEL);
-	l.startReading();
-	DHT22 t(DHT_GPIO);
-	t.startReading();
+	//Light l(LIGHTSENSOR_CHANNEL);
+	//l.startReading();
+	
+	//DHT22 t(DHT_GPIO);
+	//t.startReading();
     while (true) {        
 
 		//cout << "DHT22: " << t.getTemperature() << "C" << " and Humidity: " << t.getHumidity() << "%."<< endl;
 		//cout << "Lightsensor: " << l.getBrightness() << " (raw)" << endl;
-		//cout << "Pulsesensor: " << p.getBPM() << " (bpm)" << endl;
+		cout << "Pulsesensor: " << p.getBPM() << " (bpm) " << "is reading?" << p.isReadingBPM() << endl;
 		
-		cout << "------------------------------------------" << endl;
-        this_thread::sleep_for(milliseconds(2000));
+		//cout << "------------------------------------------" << endl;
+        this_thread::sleep_for(milliseconds(500));
     }
     //p.stopReading();
 }
