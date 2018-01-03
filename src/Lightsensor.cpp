@@ -9,7 +9,7 @@
 #include <mcp3004.h> // works for mpc3008 as well
 
 #define ADC_BASE 100 //Base for ADC read
-#define SLEEP_DELAY 10
+#define LIGHT_SLEEP_DELAY 10
 #define MAX_ADC_READING 1023
 #define ADC_REF_VOLTAGE 3.3
 #define REF_RESISTANCE 10 //kohm
@@ -44,7 +44,7 @@ void Light::lightLoop(void){
 	while(true){
 		for(int i=0;i<10;i++){
 			tmp+=analogRead(ADC_BASE + channel);
-			this_thread::sleep_for(milliseconds(SLEEP_DELAY));
+			this_thread::sleep_for(milliseconds(LIGHT_SLEEP_DELAY));
 		}
 		rawData = tmp/10;
 		tmp=0;

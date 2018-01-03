@@ -6,14 +6,16 @@
 #include <mcp3004.h>
 //custom
 #include "MediaPlayer.cpp"
+#include "Bluetooth.cpp"
 #include "Pulsesensor.cpp"
 #include "Lightsensor.cpp"
-#include "DHT22.cpp"
+#include "Thermistor.cpp"
 #include "Button.cpp"
 
-#define PULSESENSOR_CHANNEL 1
 #define LIGHTSENSOR_CHANNEL 0
-#define DHT_GPIO 29 //BCM_GPIO21 -->see gpio readall
+#define PULSESENSOR_CHANNEL 1
+#define TEMPSENSOR_CHANNEL  2
+//#define DHT_GPIO 29 //BCM_GPIO21 -->see gpio readall
 
 #define BUTTON_1_GPIO 28 // wiring pi number!!! (upper button)
 #define BUTTON_2_GPIO 25
@@ -45,15 +47,15 @@ int main(void) {
 	
 	
 	//MediaPlayer::playSong("guerilla project");
-	MediaPlayer::playPlaylist("Metal");
-	
+	//MediaPlayer::playPlaylist("Metal");
+	/*
 	Button b;
 	b.registerCallback(BUTTON_1_GPIO, &MediaPlayer::increaseLoudness);
 	b.registerCallback(BUTTON_2_GPIO, &MediaPlayer::nextSong);
 	b.registerCallback(BUTTON_3_GPIO, &MediaPlayer::tooglePlay);
 	b.registerCallback(BUTTON_4_GPIO, &MediaPlayer::previousSong);
 	b.registerCallback(BUTTON_5_GPIO, &MediaPlayer::decreaseLoudness);
-	
+	*/
 	
 	
     //Pulse p(PULSESENSOR_CHANNEL);
@@ -61,16 +63,20 @@ int main(void) {
 	//Light l(LIGHTSENSOR_CHANNEL);
 	//l.startReading();
 	
-	//DHT22 t(DHT_GPIO);
-	//t.startReading();
+	Temp t(TEMPSENSOR_CHANNEL);
+	t.startReading();
+	
+	Bluetooth b;
+	
+	
     while (true) {        
 
-		//cout << "DHT22: " << t.getTemperature() << "C" << " and Humidity: " << t.getHumidity() << "%."<< endl;
+		cout << "Temperature: " << t.getCelsius() << "°C" << endl;
 		//cout << "Lightsensor: " << l.getBrightness() << " (raw)" << endl;
 		//cout << "Pulsesensor: " << p.getBPM() << " (bpm) " << "is reading?" << p.isReadingBPM() << endl;
 		
 		//cout << "------------------------------------------" << endl;
-        this_thread::sleep_for(milliseconds(500));
+        this_thread::sleep_for(milliseconds(1000));
     }
     //p.stopReading();
 }

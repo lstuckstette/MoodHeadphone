@@ -27,7 +27,7 @@ void MediaPlayer::playSong(string title){
 	string tmp = "mpc search title \"" + title +"\" | mpc add";
 	cout << tmp << endl;
 	system(tmp.c_str());
-	system("mpc play");
+	//system("mpc play");
 }
 
 void MediaPlayer::playPlaylist(string playlistTitle){
@@ -36,7 +36,7 @@ void MediaPlayer::playPlaylist(string playlistTitle){
 	string tmp = "mpc load \"" + playlistTitle+ "\"";
 	cout << tmp << endl;
 	system(tmp.c_str());
-	system("mpc play");
+	//system("mpc play");
 }
 
 void MediaPlayer::tooglePlay(void){
