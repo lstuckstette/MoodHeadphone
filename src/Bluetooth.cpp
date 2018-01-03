@@ -1,6 +1,5 @@
 
-
-#include <dbus-c++/dbus.h>
+#include "Gobbledegook.h"
 #include <iostream>
 
 /*
@@ -21,7 +20,7 @@ class Bluetooth{
 };
 
 Bluetooth::Bluetooth(void){
-	cout << "alive!" << endl;
+	cout << "BT alive!" << endl;
 	
 }
 

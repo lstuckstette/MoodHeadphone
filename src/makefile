@@ -1,10 +1,10 @@
 all: 
 	g++ -Wall -o run main.cpp \
-		-I /usr/include/dbus-c++-1 \
+		-I ./include \
+		-L ./lib \
+		-l ggk \
 		-l wiringPi \
 		-l pthread \
-		-l dbus-c++-1
-
 	
 clean:
 	rm *o
