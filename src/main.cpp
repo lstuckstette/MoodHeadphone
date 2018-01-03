@@ -60,8 +60,8 @@ int main(void) {
 	
     //Pulse p(PULSESENSOR_CHANNEL);
     //p.startReading();
-	//Light l(LIGHTSENSOR_CHANNEL);
-	//l.startReading();
+	Light l(LIGHTSENSOR_CHANNEL);
+	l.startReading();
 	
 	Temp t(TEMPSENSOR_CHANNEL);
 	t.startReading();
@@ -71,8 +71,8 @@ int main(void) {
 	
     while (true) {        
 
-		cout << "Temperature: " << t.getCelsius() << "°C" << endl;
-		//cout << "Lightsensor: " << l.getBrightness() << " (raw)" << endl;
+		//cout << "Temperature: " << t.getCelsius() << "°C" << endl;
+		cout << "Lightsensor: " << l.getLux() << " Lux" << endl;
 		//cout << "Pulsesensor: " << p.getBPM() << " (bpm) " << "is reading?" << p.isReadingBPM() << endl;
 		
 		//cout << "------------------------------------------" << endl;

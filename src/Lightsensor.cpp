@@ -9,12 +9,13 @@
 #include <mcp3004.h> // works for mpc3008 as well
 
 #define ADC_BASE 100 //Base for ADC read
-#define LIGHT_SLEEP_DELAY 10
+#define LIGHT_SLEEP_DELAY 50
 #define MAX_ADC_READING 1023
 #define ADC_REF_VOLTAGE 3.3
-#define REF_RESISTANCE 10 //kohm
-#define LUX_CALC_SCALAR 12518931  //seeded
-#define LUX_CALC_EXPONENT -1.405 //seeded
+#define REF_RESISTANCE 10000 
+#define LUX_CALC_SCALAR 65721  //seeded
+#define LUX_CALC_EXPONENT -0.7081 //seeded
+
 /*
     Author: Lukas Stuckstette
 */
@@ -34,33 +35,32 @@ class Light {
     private:
 		thread loop;
 		int channel;
-		double rawData;
+		double rawData=0;
 		void lightLoop(void);
 
 };
 
 void Light::lightLoop(void){
-	int tmp=0;
 	while(true){
-		for(int i=0;i<10;i++){
-			tmp+=analogRead(ADC_BASE + channel);
-			this_thread::sleep_for(milliseconds(LIGHT_SLEEP_DELAY));
-		}
-		rawData = tmp/10;
-		tmp=0;
-		
+		rawData=analogRead(ADC_BASE + channel);
+		this_thread::sleep_for(milliseconds(LIGHT_SLEEP_DELAY));	
 	}
 }
 
 int Light::getLux(){
+	cout << "raw: " << rawData;
 	
-	/*float resistorVoltage = (float)rawData / MAX_ADC_READING * ADC_REF_VOLTAGE;
-	float ldrVoltage = ADC_REF_VOLTAGE - resistorVoltage;
-	float ldrResistance = ldrVoltage/resistorVoltage * REF_RESISTANCE;
-	cout << "LDR_RES " << ldrResistance << endl;
-	float ldrLux = LUX_CALC_SCALAR * pow(ldrResistance, LUX_CALC_EXPONENT);
-	return (int) ldrLux;*/
-	return 0;
+	double resistorVoltage = (double)rawData/ MAX_ADC_READING * ADC_REF_VOLTAGE;
+	
+	double ldrVoltage = ADC_REF_VOLTAGE - resistorVoltage;
+	
+	double ldrResistance = ldrVoltage/resistorVoltage * REF_RESISTANCE;
+	
+	cout << " ldrResistance: " <<  ldrResistance << "  -  ";
+	
+	double ldrLux = LUX_CALC_SCALAR * pow(ldrResistance, LUX_CALC_EXPONENT);
+	
+	return (int)ldrLux;
 	
 }
 int Light::getBrightness(void){
