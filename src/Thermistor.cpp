@@ -47,7 +47,26 @@ int Temp::getRaw(){
 }
 
 int Temp::getCelsius(){
-	return rawData;
+	//Steinhart Hart Equation:
+	// T = 1/(a + b[ln(ohm)] + c[ln(ohm)]^3)
+
+	double volts = (rawData / 1023)*3.3;
+	double ohms = ((3.3*10000)-(volts*10000))/volts;
+	double lnohm = log(ohms); // = ln(x)
+	
+	// R@25°C=8600, R (-6.2%/C @ 25C) Mil Ratio X
+	double a = 0.001860902033483;
+	double b = 0.000156942702230;
+	double c = 0.000000094148064;
+	
+	double t1 = (b*lnohm); // b[ln(ohm)]
+	double c2 = c*lnohm; // c[ln(ohm)]
+	double t2 = pow(c2,3); // c[ln(ohm)]^3
+	double temp = 1/(a + t1 + t2); //calcualte temperature
+	int tempc = temp - 273.15 - 4; //K to C
+	
+	cout << " (U:" << volts << " R:" << ohms << ") ";
+	return tempc;
 }
 
 Temp::Temp(int adc_channel) {
