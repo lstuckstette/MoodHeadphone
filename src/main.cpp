@@ -12,7 +12,7 @@
 #include "Thermistor.cpp"
 #include "Button.cpp"
 
-#define LIGHTSENSOR_CHANNEL 0
+#define LIGHTSENSOR_CHANNEL 3
 #define PULSESENSOR_CHANNEL 1
 #define TEMPSENSOR_CHANNEL  2
 //#define DHT_GPIO 29 //BCM_GPIO21 -->see gpio readall
@@ -58,22 +58,25 @@ int main(void) {
 	*/
 	
 	
-    //Pulse p(PULSESENSOR_CHANNEL);
-    //p.startReading();
-	//Light l(LIGHTSENSOR_CHANNEL);
-	//l.startReading();
-	//Temp t(TEMPSENSOR_CHANNEL);
-	//t.startReading();
+    Pulse p(PULSESENSOR_CHANNEL);
+    p.startReading();
+	Light l(LIGHTSENSOR_CHANNEL);
+	l.startReading();
+	Temp t(TEMPSENSOR_CHANNEL);
+	t.startReading();
 	
 	Bluetooth b;
 	
 	
     while (true) {        
+	
+		b.setTemp(t.getCelsius());
+		b.setLight(l.getLux());
+		b.setHeart(p.getBPM());
 
 		//cout << "Temperature: " << t.getCelsius() << "°C" << endl;
 		//cout << "Lightsensor: " << l.getLux() << " Lux" << endl;
 		//cout << "Pulsesensor: " << p.getBPM() << " (bpm) " << "is reading?" << p.isReadingBPM() << endl;
-		
 		//cout << "------------------------------------------" << endl;
         this_thread::sleep_for(milliseconds(1000));
     }

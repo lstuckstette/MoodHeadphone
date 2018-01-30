@@ -48,7 +48,7 @@ void Light::lightLoop(void){
 }
 
 int Light::getLux(){
-	cout << "raw: " << rawData;
+	//cout << "raw: " << rawData;
 	
 	double resistorVoltage = (double)rawData/ MAX_ADC_READING * ADC_REF_VOLTAGE;
 	
@@ -56,7 +56,7 @@ int Light::getLux(){
 	
 	double ldrResistance = ldrVoltage/resistorVoltage * REF_RESISTANCE;
 	
-	cout << " ldrResistance: " <<  ldrResistance << "  -  ";
+	//cout << " ldrResistance: " <<  ldrResistance << "  -  ";
 	
 	double ldrLux = LUX_CALC_SCALAR * pow(ldrResistance, LUX_CALC_EXPONENT);
 	

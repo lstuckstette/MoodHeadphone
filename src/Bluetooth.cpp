@@ -46,13 +46,22 @@ void LogAlways(const char *pText) { std::cout << "..Log..: " << pText << std::en
 void LogTrace(const char *pText) { std::cout << "-Trace-: " << pText << std::endl; }
 
 
+
+
+void parseCommand(std::string command){
+	std::string[] commandSplit = command
+}
+
+
 class Bluetooth{
 	public:
 		Bluetooth(void);
 		~Bluetooth(void);
+		void startBluetooth();
 		void setTemp(int);
 		void setLight(int);
 		void setHeart(int);
+		
 	private:
 		void setupBluetooth();
 		//const void * dataGetter(const char *pName);
@@ -65,19 +74,19 @@ class Bluetooth{
 
 void Bluetooth::setTemp(int t){
 	serverDataTemperature = t;
-	ggkNofifyUpdatedCharacteristic("/com/gobbledegook/environment/celsius");
 }
 
 void Bluetooth::setLight(int l){
 	serverDataBrightness = l;
-	ggkNofifyUpdatedCharacteristic("/com/gobbledegook/environment/lux");
 }
 
 void Bluetooth::setHeart(int h){
 	serverDataHeartrate = h;
-	ggkNofifyUpdatedCharacteristic("/com/gobbledegook/environment/heartrate");
 }
 
+void parseCommand(string command){
+	
+}
 
 
 const void * dataGetter(const char *pName){
@@ -134,9 +143,12 @@ int dataSetter(const char *pName, const void *pData){
 
 	std::string strName = pName;
 
-	if (strName == "command/string")
+	if (strName == "text/string")
 	{
 		//PARSE/CONSUME COMMAND AND EXECUTE!
+		std::string serverDataTextString = static_cast<const char *>(pData);
+		LogWarn((std::string("got string: ")+ serverDataTextString).c_str());
+		parseCommand(serverDataTextString);
 		return 1;
 	}
 
@@ -163,7 +175,7 @@ void signalHandler(int signum)
 
 void Bluetooth::setupBluetooth(){
 	//Set logging level
-	logLevel = Debug;
+	//logLevel = Info;
 	
 	// Register our loggers
 	ggkLogRegisterDebug(LogDebug);
@@ -176,8 +188,8 @@ void Bluetooth::setupBluetooth(){
 	ggkLogRegisterTrace(LogTrace);
 	
 	// Setup our signal handlers
-	signal(SIGINT, signalHandler);
-	signal(SIGTERM, signalHandler);
+	//signal(SIGINT, signalHandler);
+	//signal(SIGTERM, signalHandler);
 	
 	// Start the server's ascync processing
 	//
@@ -210,4 +222,6 @@ Bluetooth::Bluetooth(void){
 Bluetooth::~Bluetooth(void){
 	//KILL EVERYTHING!!!
 	ggkTriggerShutdown();
+	// Wait for the server to come to a complete stop (CTRL-C from the command line)
+	ggkWait();
 }

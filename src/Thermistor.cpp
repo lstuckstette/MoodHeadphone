@@ -65,7 +65,7 @@ int Temp::getCelsius(){
 	double temp = 1/(a + t1 + t2); //calcualte temperature
 	int tempc = temp - 273.15 - 4; //K to C
 	
-	cout << " (U:" << volts << " R:" << ohms << ") ";
+	//cout << " (U:" << volts << " R:" << ohms << ") ";
 	return tempc;
 }
 
