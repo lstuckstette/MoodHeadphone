@@ -2,6 +2,8 @@
 #include <sstream>
 #include "Gobbledegook.h"
 #include <iostream>
+#include <vector>
+#include <iterator>
 
 /*
 INFO:
@@ -46,11 +48,53 @@ void LogAlways(const char *pText) { std::cout << "..Log..: " << pText << std::en
 void LogTrace(const char *pText) { std::cout << "-Trace-: " << pText << std::endl; }
 
 
-
+void splitString(const std::string& str, vector<std::string>& cont, char delim = ' ')
+{
+    std::stringstream ss(str);
+    std::string token;
+    while (std::getline(ss, token, delim)) {
+        cont.push_back(token);
+    }
+}
 
 void parseCommand(std::string command){
-	std::string[] commandSplit = command
+	std::vector<std::string> tokens;
+	splitString(command, tokens);
+	/*std::istringstream commandStream(command);
+	while(commandStream){
+		std::string token;
+		commandStream >> token;
+		tokens.push_back(token);
+	}*/
+	if(tokens[0] != "COMMAND"){
+		serverDataTextString = "MALFORMED COMMAND!" ;
+		std::cerr <<serverDataTextString << std::endl;
+		return;
+	}
+	//COMMAND WLAN "SSID:PASSWORD"
+	if(tokens[1] == "WLAN"){
+		vector<std::string> wlanData;
+		//replace '"' of wlanDATA:
+		tokens[2] = tokens[2].substr(1,tokens[2].size()-1);
+		splitString(tokens[2],wlanData,':');
+		if(wlanData.size() < 2){
+			serverDataTextString = "MALFORMED WLAN COMMAND!";
+			std::cerr <<serverDataTextString << std::endl;
+			return;
+		}
+		std::string ssid = wlanData[0];
+		std::string password = wlanData[1];
+		std::string command = "echo 'network={\n\tssid=\""+ssid
+							+ "\"\n\tpsk=\""+password+"\n}\n\n' >> "
+							+"/etc/wpa_supplicant/wpa_supplicant.conf";
+		std::cout << command << std::endl;
+		std::system(command.c_str());
+	}
+	
+	
 }
+
+
 
 
 class Bluetooth{
@@ -83,11 +127,6 @@ void Bluetooth::setLight(int l){
 void Bluetooth::setHeart(int h){
 	serverDataHeartrate = h;
 }
-
-void parseCommand(string command){
-	
-}
-
 
 const void * dataGetter(const char *pName){
 	

@@ -43,6 +43,7 @@ void buttonTest(int pin){
 
 int main(void) {
 	
+	parseCommand("COMMAND WLAN \"DERP:DERPPW\"");
 	initialize();
 	
 	
@@ -65,14 +66,14 @@ int main(void) {
 	Temp t(TEMPSENSOR_CHANNEL);
 	t.startReading();
 	
-	Bluetooth b;
+	//Bluetooth b;
 	
 	
     while (true) {        
 	
-		b.setTemp(t.getCelsius());
-		b.setLight(l.getLux());
-		b.setHeart(p.getBPM());
+		//b.setTemp(t.getCelsius());
+		//b.setLight(l.getLux());
+		//b.setHeart(p.getBPM());
 
 		//cout << "Temperature: " << t.getCelsius() << "°C" << endl;
 		//cout << "Lightsensor: " << l.getLux() << " Lux" << endl;
