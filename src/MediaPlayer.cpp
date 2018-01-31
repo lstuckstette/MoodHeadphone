@@ -18,8 +18,12 @@ class MediaPlayer {
 		static void previousSong(void);
 		static void increaseLoudness(void);
 		static void decreaseLoudness(void);
-		//string getCurrentSong(void);
+		static void play(void);
 };
+
+void MediaPlayer::play(){
+	system("mpc play");
+}
 
 void MediaPlayer::playSong(string title){
 	system("mpc pause");
@@ -27,7 +31,7 @@ void MediaPlayer::playSong(string title){
 	string tmp = "mpc search title \"" + title +"\" | mpc add";
 	cout << tmp << endl;
 	system(tmp.c_str());
-	//system("mpc play");
+	system("mpc play");
 }
 
 void MediaPlayer::playPlaylist(string playlistTitle){

@@ -6,6 +6,7 @@
 #include <mcp3004.h>
 //custom
 #include "MediaPlayer.cpp"
+#include "MoodHandler.cpp"
 #include "Bluetooth.cpp"
 #include "Pulsesensor.cpp"
 #include "Lightsensor.cpp"
@@ -46,7 +47,6 @@ int main(void) {
 	parseCommand("COMMAND WLAN \"DERP:DERPPW\"");
 	initialize();
 	
-	
 	//MediaPlayer::playSong("guerilla project");
 	//MediaPlayer::playPlaylist("Metal");
 	/*
@@ -70,7 +70,7 @@ int main(void) {
 	
 	
     while (true) {        
-	
+		
 		//b.setTemp(t.getCelsius());
 		//b.setLight(l.getLux());
 		//b.setHeart(p.getBPM());
@@ -79,7 +79,7 @@ int main(void) {
 		//cout << "Lightsensor: " << l.getLux() << " Lux" << endl;
 		//cout << "Pulsesensor: " << p.getBPM() << " (bpm) " << "is reading?" << p.isReadingBPM() << endl;
 		//cout << "------------------------------------------" << endl;
-        this_thread::sleep_for(milliseconds(1000));
+        this_thread::sleep_for(seconds(1));
     }
     //p.stopReading();
 }

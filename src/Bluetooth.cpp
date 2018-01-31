@@ -89,9 +89,52 @@ void parseCommand(std::string command){
 							+"/etc/wpa_supplicant/wpa_supplicant.conf";
 		std::cout << command << std::endl;
 		std::system(command.c_str());
+		return;
 	}
-	
-	
+	//COMMAND SET_SPOTIFY "USERNAME:PASSWORD" -> ignore
+	//COMMAND MEDIA_TOGGLE
+	if(tokens[1] == "MEDIA_TOGGLE"){
+		MediaPlayer::tooglePlay();
+		return;
+	}
+	//COMMAND MEDIA_NEXT
+	if(tokens[1] == "MEDIA_NEXT"){
+		MediaPlayer::nextSong();
+		return;
+	}
+	//COMMAND MEDIA_PREVIOUS
+	if(tokens[1] == "MEDIA_PREVIOUS"){
+		MediaPlayer::previousSong();
+		return;
+	}
+	//COMMAND VOLUME_UP
+	if(tokens[1] == "VOLUME_UP"){
+		MediaPlayer::increaseLoudness();
+		return;
+	}
+	//COMMAND VOLUME_DOWN
+	if(tokens[1] == "VOLUME_DOWN"){
+		MediaPlayer::decreaseLoudness();
+		return;
+	}
+	//COMMAND GET_CURRENT_MOOD
+	if(tokens[1] == "GET_CURRENT_MOOD"){
+		
+		switch (MoodHandler::getCurrentMood()){
+		case MOTIVATION: 
+			serverDataTextString="MOTIVATION";
+			break;
+		case ENTSPANNEN: 
+			serverDataTextString="ENTSPANNEN";
+			break;
+		case ANTIMUEDIGKEIT: 
+			serverDataTextString="ANTIMUEDIGKEIT";
+			break;
+		default:
+			break;
+	};
+	}
+	std::cerr << "UNKNOWN COMMAND: " << tokens[1] << std::endl;
 }
 
 
