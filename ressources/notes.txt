@@ -1,0 +1,95 @@
+#COMMAND CNAME "DATA"
+
+
+
+
+COMMAND SET_CURRENT_MOOD "blub"
+
+COMMAND GET_CURRENT_MOOD -
+
+
+COMMAND SET_CURRENT_MOOD "MOTIVATION"
+COMMAND SET_CURRENT_MOOD "ENTSPANNEN"
+COMMAND SET_CURRENT_MOOD "ANTIMUEDIGKEIT"
+______________________________________
+
+COMMAND WLAN "SSID:PASSWORD" -
+
+COMMAND SET_SPOTIFY "USERNAME:PASSWORD" -
+
+COMMAND MEDIA_TOGGLE -
+COMMAND MEDIA_NEXT -
+COMMAND MEDIA_PREVIOUS -
+COMMAND VOLUME_UP -
+COMMAND VOLUME_DOWN -
+
+
+C1: read TEMP
+C2: read LUX
+C3: read PULSE
+
+C4: read COMMAND
+C5: write COMMAND
+
+Moods:
+
+- Müdigkeit											-> P ruhig, T (18-30), L eher dunkel < 500
+- Demotivation									-> P ruhig, T (18-30), L eher hell   > 500
+- Stress, verkrampft, unruhig		-> P hoch , T < 30, L eher hell   > 500
+
+
+
+(Uhrzeit)
+Licht
+Puls
+Temperatur
+
+
+
+
+
+
+
+enum Mood {MOTIVATION=1,ENTSPANNEN=2,ANTIMUEDIGKEIT=3};
+
+class MoodHandler{
+	
+	public:
+		static void initMoodHandler(void);
+		static void setCurrentMood(Mood m);
+		static Mood getCurrentMood(void);
+		static Mood calculateCurrentMood(int temp,int light,int pulse);
+		static void playFittingPlaylist(void);
+		static Mood currentMood;	
+};
+//MoodHandler::currentMood = MOTIVATION;
+
+
+void MoodHandler::setCurrentMood(Mood m){
+	currentMood = m;
+}
+
+Mood MoodHandler::getCurrentMood(void){
+	return currentMood;
+}
+
+Mood MoodHandler::calculateCurrentMood(int temp,int light,int pulse){
+	//TODO: calculate!
+	return currentMood;
+}
+
+void MoodHandler::playFittingPlaylist(void){
+	//TODO:
+	switch (currentMood){
+		case MOTIVATION: 
+			MediaPlayer::playPlaylist("Metal");
+			break;
+		case ENTSPANNEN: 
+			break;
+		case ANTIMUEDIGKEIT: 
+			break;
+		default:
+			break;
+		
+	};
+};

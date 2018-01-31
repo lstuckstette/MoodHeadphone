@@ -1,37 +1,36 @@
 
 
-enum Mood {MOTIVATION,ENTSPANNEN,ANTIMUEDIGKEIT};
+enum Mood {MOTIVATION=1,ENTSPANNEN=2,ANTIMUEDIGKEIT=3};
 
 class MoodHandler{
 	
 	public:
-		MoodHandler(void);
-		~MoodHandler(void);
+		static void initMoodHandler(void);
 		static void setCurrentMood(Mood m);
 		static Mood getCurrentMood(void);
 		static Mood calculateCurrentMood(int temp,int light,int pulse);
 		static void playFittingPlaylist(void);
-	
-	private:
-		Mood currentMood = MOTIVATION;
+		static Mood currentMood;	
 };
+Mood MoodHandler::currentMood = MOTIVATION;
+
 
 void MoodHandler::setCurrentMood(Mood m){
-	currentMood = m;
+	MoodHandler::currentMood = m;
 }
 
 Mood MoodHandler::getCurrentMood(void){
-	return currentMood;
+	return MoodHandler::currentMood;
 }
 
-Mood calculateCurrentMood(int temp,int light,int pulse){
+Mood MoodHandler::calculateCurrentMood(int temp,int light,int pulse){
 	//TODO: calculate!
-	return currentMood;
+	return MoodHandler::currentMood;
 }
 
 void MoodHandler::playFittingPlaylist(void){
 	//TODO:
-	switch (currentMood){
+	switch (MoodHandler::currentMood){
 		case MOTIVATION: 
 			MediaPlayer::playPlaylist("Metal");
 			break;
