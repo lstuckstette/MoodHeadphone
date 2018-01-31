@@ -1,7 +1,7 @@
 #include <iostream> 
 #include <string> 
 
-#define AMOUNT "5"
+#define AMOUNT "10"
 
 using namespace std;
 using namespace std::chrono;
@@ -12,17 +12,29 @@ class MediaPlayer {
 		~MediaPlayer(void);
 
 		static void playSong(string name);
-		static void playPlaylist(string name);
+		static void setPlaylist(string name);
 		static void tooglePlay(void);
 		static void nextSong(void);
 		static void previousSong(void);
 		static void increaseLoudness(void);
 		static void decreaseLoudness(void);
+		static void setLoudness(int);
 		static void play(void);
 };
 
 void MediaPlayer::play(){
 	system("mpc play");
+}
+
+void MediaPlayer::setLoudness(int amount){
+	if( amount <100 && amount >0 ){
+		return;
+	}
+	string tmp = "mpc volume " ;
+	tmp +=amount;
+	cout << tmp << endl;
+	system(tmp.c_str());
+	
 }
 
 void MediaPlayer::playSong(string title){
@@ -34,12 +46,13 @@ void MediaPlayer::playSong(string title){
 	system("mpc play");
 }
 
-void MediaPlayer::playPlaylist(string playlistTitle){
-	system("mpc pause");
+void MediaPlayer::setPlaylist(string playlistTitle){
+	//system("mpc pause");
 	system("mpc clear");
 	string tmp = "mpc load \"" + playlistTitle+ "\"";
 	cout << tmp << endl;
 	system(tmp.c_str());
+	system("mpc random on");
 	//system("mpc play");
 }
 

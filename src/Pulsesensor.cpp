@@ -48,6 +48,8 @@ class Pulse {
 		int IBI = 600;             // holds the time between beats, must be seeded! 
 		bool pulse = false;     // true when pulse wave is high, false when it's low
 		bool QS = false;        // becomes true when Pi finds a beat.
+		
+		int lastGoodBPM = 0;
 
 };
 
@@ -136,6 +138,8 @@ void Pulse::readPulse(void) {
     lastBeatTime = sampleCounter;          // bring the lastBeatTime up to date        
     firstBeat = true;                      // set these to avoid noise
     secondBeat = false;                    // when we get the heartbeat back
+	//custom::
+	QS = false;
   }
 
     
@@ -167,6 +171,16 @@ void Pulse::stopReading(void) {
 }
 
 int Pulse::getBPM(void) {
-    //return current reading
+	//ignore extreme values;
+	if(BPM < 50 || BPM > 140){
+		return -1;
+	}
     return BPM;
 }
+
+
+
+
+
+
+

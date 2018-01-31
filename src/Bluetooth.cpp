@@ -5,6 +5,7 @@
 #include <vector>
 #include <iterator>
 
+
 /*
 INFO:
 - Wiki: http://wiki.apertium.org/wiki/Compiling_a_C%2B%2B_D-Bus_program
@@ -18,10 +19,10 @@ using namespace std;
 
 
 //Server data variables - holding required Values:
-static int16_t serverDataTemperature = 22;
-static int16_t serverDataBrightness = 1000;
-static int16_t serverDataHeartrate = 66;
-static std::string serverDataTextString = "ACK";
+static int16_t serverDataTemperature = 0;
+static int16_t serverDataBrightness = 0;
+static int16_t serverDataHeartrate = 00;
+static std::string serverDataTextString = MoodHandler::getCurrentMoodString();
 
 // LOGGING:
 enum LogLevel
@@ -60,15 +61,9 @@ void splitString(const std::string& str, vector<std::string>& cont, char delim =
 void parseCommand(std::string command){
 	std::vector<std::string> tokens;
 	splitString(command, tokens);
-	/*std::istringstream commandStream(command);
-	while(commandStream){
-		std::string token;
-		commandStream >> token;
-		tokens.push_back(token);
-	}*/
+
 	if(tokens[0] != "COMMAND"){
-		serverDataTextString = "MALFORMED COMMAND!" ;
-		std::cerr <<serverDataTextString << std::endl;
+		std::cerr << "MALFORMED COMMAND!" << std::endl;
 		return;
 	}
 	//COMMAND WLAN "SSID:PASSWORD"
@@ -78,8 +73,7 @@ void parseCommand(std::string command){
 		tokens[2] = tokens[2].substr(1,tokens[2].size()-1);
 		splitString(tokens[2],wlanData,':');
 		if(wlanData.size() < 2){
-			serverDataTextString = "MALFORMED WLAN COMMAND!";
-			std::cerr <<serverDataTextString << std::endl;
+			std::cerr << "MALFORMED WLAN COMMAND!" << std::endl;
 			return;
 		}
 		std::string ssid = wlanData[0];
@@ -119,21 +113,40 @@ void parseCommand(std::string command){
 	}
 	//COMMAND GET_CURRENT_MOOD
 	if(tokens[1] == "GET_CURRENT_MOOD"){
-		
-		switch (MoodHandler::getCurrentMood()){
-		case MOTIVATION: 
-			serverDataTextString="MOTIVATION";
-			break;
-		case ENTSPANNEN: 
-			serverDataTextString="ENTSPANNEN";
-			break;
-		case ANTIMUEDIGKEIT: 
-			serverDataTextString="ANTIMUEDIGKEIT";
-			break;
-		default:
-			break;
-	};
+		serverDataTextString = MoodHandler::getCurrentMoodString();
 	}
+	//COMMAND SET_CURRENT_MOOD DATA
+	if(tokens[1] == "SET_CURRENT_MOOD"){
+		//check command length:
+		if(tokens.size() < 3){
+			std::cerr << "MALFORMED SET_CURRENT_MOOD COMMAND!" << std::endl;
+			return;
+		}
+		//set custom Flag -> disable automatic recogniton of mood!
+		MoodHandler::customFlag = false;
+		//replace '"' of DATA:
+		tokens[2] = tokens[2].substr(1,tokens[2].size()-1);
+		string data = tokens[2];
+		if(data == "MOTIVATION"){
+			MoodHandler::setCurrentMood(MOTIVATION);
+			MoodHandler::setFittingPlaylist();
+			return;
+		}
+		if(data == "ANTIMUEDIGKEIT"){
+			MoodHandler::setCurrentMood(ANTIMUEDIGKEIT);
+			MoodHandler::setFittingPlaylist();
+			return;
+		}
+		if(data == "ENTSPANNEN"){
+			MoodHandler::setCurrentMood(ENTSPANNEN);
+			MoodHandler::setFittingPlaylist();
+			return;
+		}
+		cerr << "UNKNOWN MOOD: " << data << endl;
+		return;
+		
+	}
+	
 	std::cerr << "UNKNOWN COMMAND: " << tokens[1] << std::endl;
 }
 

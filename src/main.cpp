@@ -23,6 +23,7 @@
 #define BUTTON_3_GPIO 23
 #define BUTTON_4_GPIO 26
 #define BUTTON_5_GPIO 22
+#define MOOD_READ_INTERVALL 60 //seconds
 
 using namespace std;
 using namespace std::chrono;
@@ -36,6 +37,9 @@ void initialize(void){
 	 }
 	 //initialize ADC
 	 mcp3004Setup(ADC_BASE, 0);
+	 
+	 //set system loudness to 50
+	 MediaPlayer::setLoudness(50);
 }
 
 void buttonTest(int pin){
@@ -44,11 +48,10 @@ void buttonTest(int pin){
 
 int main(void) {
 	
-	parseCommand("COMMAND WLAN \"DERP:DERPPW\"");
-	initialize();
 	
-	//MediaPlayer::playSong("guerilla project");
-	//MediaPlayer::playPlaylist("Metal");
+	
+	
+	initialize();
 	/*
 	Button b;
 	b.registerCallback(BUTTON_1_GPIO, &MediaPlayer::increaseLoudness);
@@ -68,18 +71,35 @@ int main(void) {
 	
 	Bluetooth b;
 	
-	
+	int secondCounter= 0;
     while (true) {        
+		//get new sensorData:
+		int temperature = t.getCelsius();
+		int light = l.getLux();
+		int pulse = p.getBPM();
 		
-		b.setTemp(t.getCelsius());
-		b.setLight(l.getLux());
-		b.setHeart(p.getBPM());
+		//Update BLE-characteristics:
+		b.setTemp(temperature);
+		b.setLight(light);
+		b.setHeart(pulse);
+		
+		//get new Mood Reading every MOOD_READ_INTERVALL seconds
+		if( secondCounter == MOOD_READ_INTERVALL && !MoodHandler::customFlag){
+			cout << "renewing Mood:" << endl;
+			MoodHandler::calculateCurrentMood(temperature,light,pulse);
+			MoodHandler::setFittingPlaylist();
+			//reset counter:
+			secondCounter = 0;
+		}
 
-		//cout << "Temperature: " << t.getCelsius() << "°C" << endl;
-		//cout << "Lightsensor: " << l.getLux() << " Lux" << endl;
+		//cout << "Temperature: " << temperature << " °C" << endl;
+		//cout << "Lightsensor: " << light << " Lux" << endl;
 		//cout << "Pulsesensor: " << p.getBPM() << " (bpm) " << "is reading?" << p.isReadingBPM() << endl;
 		//cout << "------------------------------------------" << endl;
+		
+		
         this_thread::sleep_for(seconds(1));
+		secondCounter++;
     }
     //p.stopReading();
 }
