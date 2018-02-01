@@ -38,12 +38,8 @@ void initialize(void){
 	 //initialize ADC
 	 mcp3004Setup(ADC_BASE, 0);
 	 
-	 //set system loudness to 50
-	 MediaPlayer::setLoudness(50);
-}
-
-void buttonTest(int pin){
-	cout << "Button " << pin << " pressed!" << endl;
+	 //init mpc:
+	 MediaPlayer::init();
 }
 
 int main(void) {
@@ -52,14 +48,7 @@ int main(void) {
 	
 	
 	initialize();
-	/*
-	Button b;
-	b.registerCallback(BUTTON_1_GPIO, &MediaPlayer::increaseLoudness);
-	b.registerCallback(BUTTON_2_GPIO, &MediaPlayer::nextSong);
-	b.registerCallback(BUTTON_3_GPIO, &MediaPlayer::tooglePlay);
-	b.registerCallback(BUTTON_4_GPIO, &MediaPlayer::previousSong);
-	b.registerCallback(BUTTON_5_GPIO, &MediaPlayer::decreaseLoudness);
-	*/
+
 	
 	
     Pulse p(PULSESENSOR_CHANNEL);
@@ -71,6 +60,8 @@ int main(void) {
 	
 	Bluetooth b;
 	
+	//set init playlist:
+	MoodHandler::setFittingPlaylist();
 	int secondCounter= 0;
     while (true) {        
 		//get new sensorData:
@@ -101,7 +92,13 @@ int main(void) {
         this_thread::sleep_for(seconds(1));
 		secondCounter++;
     }
-    //p.stopReading();
 }
 
-
+	/*
+	Button b;
+	b.registerCallback(BUTTON_1_GPIO, &MediaPlayer::increaseLoudness);
+	b.registerCallback(BUTTON_2_GPIO, &MediaPlayer::nextSong);
+	b.registerCallback(BUTTON_3_GPIO, &MediaPlayer::tooglePlay);
+	b.registerCallback(BUTTON_4_GPIO, &MediaPlayer::previousSong);
+	b.registerCallback(BUTTON_5_GPIO, &MediaPlayer::decreaseLoudness);
+	*/

@@ -111,9 +111,15 @@ void parseCommand(std::string command){
 		MediaPlayer::decreaseLoudness();
 		return;
 	}
+	//COMMAND COMMAND GET_SONG_STATUS
+	if(tokens[1] == "COMMAND GET_SONG_STATUS"){
+		serverDataTextString = MediaPlayer::getCurrentSong();
+		return;
+	}
 	//COMMAND GET_CURRENT_MOOD
 	if(tokens[1] == "GET_CURRENT_MOOD"){
 		serverDataTextString = MoodHandler::getCurrentMoodString();
+		return;
 	}
 	//COMMAND SET_CURRENT_MOOD DATA
 	if(tokens[1] == "SET_CURRENT_MOOD"){
@@ -125,7 +131,7 @@ void parseCommand(std::string command){
 		//set custom Flag -> disable automatic recogniton of mood!
 		MoodHandler::customFlag = false;
 		//replace '"' of DATA:
-		tokens[2] = tokens[2].substr(1,tokens[2].size()-1);
+		tokens[2] = tokens[2].substr(1,tokens[2].size()-2);
 		string data = tokens[2];
 		if(data == "MOTIVATION"){
 			MoodHandler::setCurrentMood(MOTIVATION);

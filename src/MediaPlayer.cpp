@@ -1,5 +1,6 @@
 #include <iostream> 
 #include <string> 
+#include <fstream>
 
 #define AMOUNT "10"
 
@@ -20,16 +21,36 @@ class MediaPlayer {
 		static void decreaseLoudness(void);
 		static void setLoudness(int);
 		static void play(void);
+		static void init(void);
+		static string getCurrentSong(void);
 };
+
+string MediaPlayer::getCurrentSong(void){
+	system("mpc > /share/MoodCode/consolebuffer");
+	string status = "";
+	ifstream inFile;
+	inFile.open("/share/MoodCode/consolebuffer");
+	if(inFile){
+		string line;
+		while(inFile){
+			getline(inFile,line);
+			status = status+line+"\n";
+			break; //only first line!
+		}
+	}
+	return status;
+}
+
+void MediaPlayer::init(void){
+	system("mpc volume 50");
+	system("mpc random on");
+}
 
 void MediaPlayer::play(){
 	system("mpc play");
 }
 
 void MediaPlayer::setLoudness(int amount){
-	if( amount <100 && amount >0 ){
-		return;
-	}
 	string tmp = "mpc volume " ;
 	tmp +=amount;
 	cout << tmp << endl;
@@ -47,13 +68,10 @@ void MediaPlayer::playSong(string title){
 }
 
 void MediaPlayer::setPlaylist(string playlistTitle){
-	//system("mpc pause");
-	system("mpc clear");
+	system("mpc crop");
 	string tmp = "mpc load \"" + playlistTitle+ "\"";
 	cout << tmp << endl;
 	system(tmp.c_str());
-	system("mpc random on");
-	//system("mpc play");
 }
 
 void MediaPlayer::tooglePlay(void){
