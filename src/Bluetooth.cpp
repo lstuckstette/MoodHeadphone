@@ -34,7 +34,7 @@ enum LogLevel
 };
 
 // Our log level - defaulted to 'Normal' but can be modified via command-line options
-LogLevel logLevel = Normal;
+LogLevel logLevel = Debug;
 
 // Our full set of logging methods (we just log to stdout)
 //
@@ -112,7 +112,7 @@ void parseCommand(std::string command){
 		return;
 	}
 	//COMMAND COMMAND GET_SONG_STATUS
-	if(tokens[1] == "COMMAND GET_SONG_STATUS"){
+	if(tokens[1] == "GET_SONG_STATUS"){
 		serverDataTextString = MediaPlayer::getCurrentSong();
 		return;
 	}
